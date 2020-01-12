@@ -14,3 +14,4 @@ D:\asp.net core\TalkToApi\obj\Debug\netcoreapp2.1\TalkToApi.RazorTargetAssemblyI
 D:\asp.net core\TalkToApi\bin\Debug\netcoreapp2.1\TalkToApi.pdb
 D:\asp.net core\TalkToApi\obj\Debug\netcoreapp2.1\TalkToApi.dll
 D:\asp.net core\TalkToApi\obj\Debug\netcoreapp2.1\TalkToApi.pdb
+D:\asp.net core\TalkToApi\bin\Debug\netcoreapp2.1\TalkToApi.xml
