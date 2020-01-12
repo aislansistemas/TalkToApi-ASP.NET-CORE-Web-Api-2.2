@@ -1,0 +1,16 @@
+D:\asp.net core\TalkToApi\bin\Debug\netcoreapp2.1\appsettings.Development.json
+D:\asp.net core\TalkToApi\bin\Debug\netcoreapp2.1\appsettings.json
+D:\asp.net core\TalkToApi\bin\Debug\netcoreapp2.1\Properties\launchSettings.json
+D:\asp.net core\TalkToApi\bin\Debug\netcoreapp2.1\TalkToApi.deps.json
+D:\asp.net core\TalkToApi\bin\Debug\netcoreapp2.1\TalkToApi.runtimeconfig.json
+D:\asp.net core\TalkToApi\bin\Debug\netcoreapp2.1\TalkToApi.runtimeconfig.dev.json
+D:\asp.net core\TalkToApi\bin\Debug\netcoreapp2.1\TalkToApi.dll
+D:\asp.net core\TalkToApi\obj\Debug\netcoreapp2.1\TalkToApi.csprojAssemblyReference.cache
+D:\asp.net core\TalkToApi\obj\Debug\netcoreapp2.1\TalkToApi.RazorAssemblyInfo.cache
+D:\asp.net core\TalkToApi\obj\Debug\netcoreapp2.1\TalkToApi.RazorAssemblyInfo.cs
+D:\asp.net core\TalkToApi\obj\Debug\netcoreapp2.1\TalkToApi.AssemblyInfoInputs.cache
+D:\asp.net core\TalkToApi\obj\Debug\netcoreapp2.1\TalkToApi.AssemblyInfo.cs
+D:\asp.net core\TalkToApi\obj\Debug\netcoreapp2.1\TalkToApi.RazorTargetAssemblyInfo.cache
+D:\asp.net core\TalkToApi\bin\Debug\netcoreapp2.1\TalkToApi.pdb
+D:\asp.net core\TalkToApi\obj\Debug\netcoreapp2.1\TalkToApi.dll
+D:\asp.net core\TalkToApi\obj\Debug\netcoreapp2.1\TalkToApi.pdb
