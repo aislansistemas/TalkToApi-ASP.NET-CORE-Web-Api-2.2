@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -21,6 +22,7 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using TalkToApi.DataBase;
+using TalkToApi.Helpers;
 using TalkToApi.Helpers.Swagger;
 using TalkToApi.V1.Models;
 using TalkToApi.V1.Repositories;
@@ -40,6 +42,14 @@ namespace TalkToApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //automapper configuração
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new DTOMapperProfile());
+            });
+            IMapper mapper = config.CreateMapper();
+            services.AddSingleton(mapper);
+
             services.Configure<ApiBehaviorOptions>(op =>
             {
                 op.SuppressModelStateInvalidFilter = true;
@@ -141,10 +151,10 @@ namespace TalkToApi
 
             });
 
-            services.AddMvc(config => {
-                config.ReturnHttpNotAcceptable = true;
-                config.InputFormatters.Add(new XmlSerializerInputFormatter(config));//xml
-                config.OutputFormatters.Add(new XmlSerializerOutputFormatter());//xml
+            services.AddMvc(cfg => {
+                cfg.ReturnHttpNotAcceptable = true;
+                cfg.InputFormatters.Add(new XmlSerializerInputFormatter(cfg));//xml
+                cfg.OutputFormatters.Add(new XmlSerializerOutputFormatter());//xml
             })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(

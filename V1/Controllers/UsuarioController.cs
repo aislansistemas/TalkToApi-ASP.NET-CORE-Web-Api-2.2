@@ -11,6 +11,7 @@ using System.Text;
 using TalkToApi.V1.Models;
 using TalkToApi.V1.Repositories.Contracts;
 using System.Security.Claims;
+using TalkToApi.V1.Models.DTO;
 
 namespace TalkToApi.V1.Controllers
 {

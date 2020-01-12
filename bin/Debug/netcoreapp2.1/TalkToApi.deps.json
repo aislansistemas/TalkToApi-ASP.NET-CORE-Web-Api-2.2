@@ -24,6 +24,7 @@
     ".NETCoreApp,Version=v2.1": {
       "TalkToApi/1.0.0": {
         "dependencies": {
+          "AutoMapper.Collection": "6.0.0",
           "Microsoft.AspNetCore.App": "2.1.1",
           "Microsoft.AspNetCore.Mvc.Versioning": "2.1.0",
           "Microsoft.AspNetCore.Razor.Design": "2.1.2",
@@ -39,6 +40,35 @@
         },
         "compile": {
           "TalkToApi.dll": {}
+        }
+      },
+      "AutoMapper/9.0.0": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.5.0",
+          "System.Reflection.Emit": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/AutoMapper.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/AutoMapper.dll": {}
+        }
+      },
+      "AutoMapper.Collection/6.0.0": {
+        "dependencies": {
+          "AutoMapper": "9.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/AutoMapper.Collection.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/AutoMapper.Collection.dll": {}
         }
       },
       "Microsoft.AspNetCore.Mvc.Versioning/2.1.0": {
@@ -3724,6 +3754,20 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "AutoMapper/9.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-xCqvoxT4HIrNY/xlXG9W+BA/awdrhWvMTKTK/igkGSRbhOhpl3Q8O8Gxlhzjc9JsYqE7sS6AxgyuUUvZ6R5/Bw==",
+      "path": "automapper/9.0.0",
+      "hashPath": "automapper.9.0.0.nupkg.sha512"
+    },
+    "AutoMapper.Collection/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-xFCr0PujlK5HB9wmAQ+RbFBTEt7VIbT08ZcG24Bf5CYoR7hJKMyFju/dSSzrpxnDXtpFyqd3Zwmu7UU4L1iD4Q==",
+      "path": "automapper.collection/6.0.0",
+      "hashPath": "automapper.collection.6.0.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Mvc.Versioning/2.1.0": {
       "type": "package",
