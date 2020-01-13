@@ -12,6 +12,7 @@ using TalkToApi.V1.Models;
 using TalkToApi.V1.Repositories.Contracts;
 using System.Security.Claims;
 using TalkToApi.V1.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TalkToApi.V1.Controllers
 {
@@ -110,6 +111,45 @@ namespace TalkToApi.V1.Controllers
                 usuario.UserName = usuarioDTO.Email;
                 usuario.Email = usuarioDTO.Email;
                 var resultado = _userInManager.CreateAsync(usuario, usuarioDTO.Senha).Result;
+
+                if (!resultado.Succeeded)
+                {
+                    List<string> erros = new List<string>();
+                    foreach (var error in resultado.Errors)
+                    {
+                        erros.Add(error.Description);
+                    }
+                    return UnprocessableEntity(erros);
+                }
+                else
+                {
+                    return Ok(usuario);
+                }
+            }
+            else
+            {
+                return UnprocessableEntity();
+            }
+        }
+        [Authorize]
+        [HttpPut("{id}")]
+        public ActionResult Atualizar(string id,[FromBody]UsuarioDTO usuarioDTO)
+        {
+            ApplicationUser usuario = _userInManager.GetUserAsync(HttpContext.User).Result;
+            if (usuario.Id != id)
+            {
+                return Forbid();
+            }
+
+            if (ModelState.IsValid)
+            {
+                usuario.FullName = usuarioDTO.Nome;
+                usuario.UserName = usuarioDTO.Email;
+                usuario.Email = usuarioDTO.Email;
+                usuario.Slogan = usuarioDTO.Slogan;
+                var resultado = _userInManager.UpdateAsync(usuario).Result;
+                _userInManager.RemovePasswordAsync(usuario);
+                _userInManager.AddPasswordAsync(usuario,usuarioDTO.Senha);
 
                 if (!resultado.Succeeded)
                 {
