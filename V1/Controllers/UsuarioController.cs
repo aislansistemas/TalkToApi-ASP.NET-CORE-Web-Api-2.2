@@ -35,6 +35,22 @@ namespace TalkToApi.V1.Controllers
             _userInManager = userInManager;
             _tokenrepository = tokenrepository;
         }
+        [Authorize]
+        [HttpGet("")]
+        public ActionResult ObterTodos()
+        {
+            return Ok(_userInManager.Users);
+        }
+        [HttpGet("{id}")]
+        [Authorize]
+        public ActionResult ObterUsuario(string id)
+        {
+            var usuario = _userInManager.FindByIdAsync(id).Result;
+            if (usuario == null)
+                return NotFound();
+
+            return Ok(usuario);
+        }
 
         [HttpPost("login")]
         public ActionResult Login([FromBody]UsuarioDTO usuariodto)
