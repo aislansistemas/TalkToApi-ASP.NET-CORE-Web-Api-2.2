@@ -15,15 +15,27 @@ namespace TalkToApi.V1.Repository
         {
             _banco = banco;
         }
+
+        public void Atualizar(Mensagem mensagem)
+        {
+            _banco.Mensagem.Update(mensagem);
+            _banco.SaveChanges();
+        }
+
         public void Cadastrar(Mensagem mensagem)
         {
             _banco.Mensagem.Add(mensagem);
             _banco.SaveChanges();
         }
 
+        public Mensagem Obter(int id)
+        {
+            return _banco.Mensagem.Find(id);
+        }
+
         public List<Mensagem> ObterMensagens(string usuarioUmId, string usuarioDoisId)
         {
-            return _banco.Mensagem.Where(x => (x.DeId == usuarioUmId || x.DeId == usuarioDoisId) && (x.ParaId == usuarioDoisId || x.ParaId == usuarioDoisId)).ToList();
+            return _banco.Mensagem.Where(x => (x.DeId == usuarioUmId || x.DeId == usuarioDoisId) && (x.ParaId == usuarioUmId || x.ParaId == usuarioDoisId)).ToList();
         }
     }
 }

@@ -27,6 +27,8 @@ using TalkToApi.Helpers.Swagger;
 using TalkToApi.V1.Models;
 using TalkToApi.V1.Repositories;
 using TalkToApi.V1.Repositories.Contracts;
+using TalkToApi.V1.Repository;
+using TalkToApi.V1.Repository.Contracts;
 
 namespace TalkToApi
 {
@@ -55,6 +57,7 @@ namespace TalkToApi
                 op.SuppressModelStateInvalidFilter = true;
             });
 
+            services.AddScoped<IMensagemRepository, MensagemRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<ITokenRepository, TokenRepository>();
 

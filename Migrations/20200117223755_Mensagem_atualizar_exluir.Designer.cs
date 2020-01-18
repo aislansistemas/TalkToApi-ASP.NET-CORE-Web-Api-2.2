@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TalkToApi.DataBase;
 
 namespace TalkToApi.Migrations
 {
     [DbContext(typeof(TalkToContext))]
-    partial class TalkToContextModelSnapshot : ModelSnapshot
+    [Migration("20200117223755_Mensagem_atualizar_exluir")]
+    partial class Mensagem_atualizar_exluir
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
