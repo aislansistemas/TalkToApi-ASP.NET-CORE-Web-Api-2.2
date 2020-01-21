@@ -158,6 +158,12 @@ namespace TalkToApi
                 cfg.ReturnHttpNotAcceptable = true;
                 cfg.InputFormatters.Add(new XmlSerializerInputFormatter(cfg));//xml
                 cfg.OutputFormatters.Add(new XmlSerializerOutputFormatter());//xml
+
+                var jsonOutputFormatter=cfg.OutputFormatters.OfType<JsonOutputFormatter>().FirstOrDefault();
+                if(jsonOutputFormatter != null)
+                {
+                    jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.TalkTo.hateoas+json");
+                }
             })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using TalkToApi.v1.Models.DTO;
 
 namespace TalkToApi.V1.Models.DTO
 {
-    public class UsuarioDTO
+    public class UsuarioDTO:BaseDTO
     {
+        public string Id { get; set; }
         [Required]
         public string Nome { get; set; }
         [Required]
