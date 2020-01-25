@@ -14,6 +14,7 @@ using System.Security.Claims;
 using TalkToApi.V1.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
+using TalkToApi.Helpers.Contants;
 
 namespace TalkToApi.V1.Controllers
 {
@@ -40,30 +41,45 @@ namespace TalkToApi.V1.Controllers
         }
         [Authorize]
         [HttpGet("",Name ="UsuarioObterTodos")]
-        public ActionResult ObterTodos()
+        public ActionResult ObterTodos([FromHeader(Name = "Accept")]string mediaType)
         {
             var usuariosappuser = _userInManager.Users.ToList();
-            var listaUsariosDTO=_mapper.Map<List<ApplicationUser>,List<UsuarioDTO>>(usuariosappuser);
-            foreach (var lista in listaUsariosDTO)
+            if (mediaType == CustomMediaTypes.Hateoas)
             {
-                lista.Links.Add(new v1.Models.DTO.LinkDTO("self",Url.Link("UsuarioObter", new {id=lista.Id }),"GET"));
+                var listaUsariosDTO = _mapper.Map<List<ApplicationUser>, List<UsuarioDTO>>(usuariosappuser);
+                foreach (var lista in listaUsariosDTO)
+                {
+                    lista.Links.Add(new v1.Models.DTO.LinkDTO("self", Url.Link("UsuarioObter", new { id = lista.Id }), "GET"));
+                }
+                var listaDTO = new ListaDTO<UsuarioDTO>() { Lista = listaUsariosDTO };
+                listaDTO.Links.Add(new v1.Models.DTO.LinkDTO("self", Url.Link("UsuarioObterTodos", null), "GET"));
+                return Ok(listaDTO);
             }
-            var listaDTO=new ListaDTO<UsuarioDTO>() { Lista = listaUsariosDTO };
-            listaDTO.Links.Add(new v1.Models.DTO.LinkDTO("self", Url.Link("UsuarioObterTodos", null), "GET"));
-            return Ok(listaDTO);
+            else
+            {
+                var usuarioresult = _mapper.Map<List<ApplicationUser>, List<UsuarioDTOSemHyperLink>>(usuariosappuser);
+                return Ok(usuarioresult);
+            }
         }
         [HttpGet("{id}",Name = "UsuarioObter")]
         [Authorize]
-        public ActionResult ObterUsuario(string id)
+        public ActionResult ObterUsuario(string id, [FromHeader(Name = "Accept")]string mediaType)
         {
             var usuario = _userInManager.FindByIdAsync(id).Result;
             if (usuario == null)
                 return NotFound();
-
-            var usuarioDTO = _mapper.Map<ApplicationUser, UsuarioDTO>(usuario);
-            usuarioDTO.Links.Add(new v1.Models.DTO.LinkDTO("self", Url.Link("UsuarioObter", new { id = usuarioDTO.Id }), "GET"));
-            usuarioDTO.Links.Add(new v1.Models.DTO.LinkDTO("atualizar", Url.Link("UsuarioAtualizar", new { id = usuarioDTO.Id }), "PUT"));
-            return Ok(usuarioDTO);
+            if (mediaType == CustomMediaTypes.Hateoas)
+            {
+                var usuarioDTO = _mapper.Map<ApplicationUser, UsuarioDTO>(usuario);
+                usuarioDTO.Links.Add(new v1.Models.DTO.LinkDTO("self", Url.Link("UsuarioObter", new { id = usuarioDTO.Id }), "GET"));
+                usuarioDTO.Links.Add(new v1.Models.DTO.LinkDTO("atualizar", Url.Link("UsuarioAtualizar", new { id = usuarioDTO.Id }), "PUT"));
+                return Ok(usuarioDTO);
+            }
+            else
+            {
+                var usuarioresult = _mapper.Map<ApplicationUser, UsuarioDTOSemHyperLink>(usuario);
+                return Ok(usuarioresult);
+            }
         }
 
         [HttpPost("login")]
@@ -132,7 +148,7 @@ namespace TalkToApi.V1.Controllers
         }
 
         [HttpPost("",Name ="UsuarioCadastrar")]
-        public ActionResult Cadastrar([FromBody]UsuarioDTO usuarioDTO)
+        public ActionResult Cadastrar([FromBody]UsuarioDTO usuarioDTO, [FromHeader(Name = "Accept")]string mediaType)
         {
             if (ModelState.IsValid)
             {
@@ -153,12 +169,19 @@ namespace TalkToApi.V1.Controllers
                 }
                 else
                 {
-                    var usuarioDTODB = _mapper.Map<ApplicationUser, UsuarioDTO>(usuario);
-                    usuarioDTODB.Links.Add(new v1.Models.DTO.LinkDTO("self", Url.Link("UsuarioCadastrar", new { id = usuarioDTODB.Id }), "POST"));
-                    usuarioDTODB.Links.Add(new v1.Models.DTO.LinkDTO("atualizar", Url.Link("UsuarioAtualizar", new { id = usuarioDTODB.Id }), "PUT"));
-                    usuarioDTODB.Links.Add(new v1.Models.DTO.LinkDTO("obterUsuario", Url.Link("UsuarioObter", new { id = usuarioDTODB.Id }), "GET"));
-                    return Ok(usuarioDTODB);
-                    
+                    if (mediaType == CustomMediaTypes.Hateoas)
+                    {
+                        var usuarioDTODB = _mapper.Map<ApplicationUser, UsuarioDTO>(usuario);
+                        usuarioDTODB.Links.Add(new v1.Models.DTO.LinkDTO("self", Url.Link("UsuarioCadastrar", new { id = usuarioDTODB.Id }), "POST"));
+                        usuarioDTODB.Links.Add(new v1.Models.DTO.LinkDTO("atualizar", Url.Link("UsuarioAtualizar", new { id = usuarioDTODB.Id }), "PUT"));
+                        usuarioDTODB.Links.Add(new v1.Models.DTO.LinkDTO("obterUsuario", Url.Link("UsuarioObter", new { id = usuarioDTODB.Id }), "GET"));
+                        return Ok(usuarioDTODB);
+                    }
+                    else
+                    {
+                        var usuarioresult = _mapper.Map<ApplicationUser, UsuarioDTOSemHyperLink>(usuario);
+                        return Ok(usuarioresult);
+                    }
                 }
             }
             else
@@ -168,7 +191,7 @@ namespace TalkToApi.V1.Controllers
         }
         [Authorize]
         [HttpPut("{id}",Name ="UsuarioAtualizar")]
-        public ActionResult Atualizar(string id,[FromBody]UsuarioDTO usuarioDTO)
+        public ActionResult Atualizar(string id,[FromBody]UsuarioDTO usuarioDTO, [FromHeader(Name = "Accept")]string mediaType)
         {
             ApplicationUser usuario = _userInManager.GetUserAsync(HttpContext.User).Result;
             if (usuario.Id != id)
@@ -197,10 +220,18 @@ namespace TalkToApi.V1.Controllers
                 }
                 else
                 {
-                    var usuarioDTODB = _mapper.Map<ApplicationUser, UsuarioDTO>(usuario);
-                    usuarioDTODB.Links.Add(new v1.Models.DTO.LinkDTO("self", Url.Link("UsuaripAtualizar", new { id = usuarioDTODB.Id }), "PUT"));
-                    usuarioDTODB.Links.Add(new v1.Models.DTO.LinkDTO("obterUsuario", Url.Link("UsuarioObter", new { id = usuarioDTODB.Id }), "GET"));
-                    return Ok(usuarioDTODB);
+                    if (mediaType == CustomMediaTypes.Hateoas)
+                    {
+                        var usuarioDTODB = _mapper.Map<ApplicationUser, UsuarioDTO>(usuario);
+                        usuarioDTODB.Links.Add(new v1.Models.DTO.LinkDTO("self", Url.Link("UsuaripAtualizar", new { id = usuarioDTODB.Id }), "PUT"));
+                        usuarioDTODB.Links.Add(new v1.Models.DTO.LinkDTO("obterUsuario", Url.Link("UsuarioObter", new { id = usuarioDTODB.Id }), "GET"));
+                        return Ok(usuarioDTODB);
+                    }
+                    else
+                    {
+                        var usuarioresult=_mapper.Map<ApplicationUser, UsuarioDTOSemHyperLink>(usuario);
+                        return Ok(usuarioresult);
+                    }
                 }
             }
             else

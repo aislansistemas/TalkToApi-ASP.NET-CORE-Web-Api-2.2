@@ -23,6 +23,7 @@ using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using TalkToApi.DataBase;
 using TalkToApi.Helpers;
+using TalkToApi.Helpers.Contants;
 using TalkToApi.Helpers.Swagger;
 using TalkToApi.V1.Models;
 using TalkToApi.V1.Repositories;
@@ -162,7 +163,7 @@ namespace TalkToApi
                 var jsonOutputFormatter=cfg.OutputFormatters.OfType<JsonOutputFormatter>().FirstOrDefault();
                 if(jsonOutputFormatter != null)
                 {
-                    jsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.TalkTo.hateoas+json");
+                    jsonOutputFormatter.SupportedMediaTypes.Add(CustomMediaTypes.Hateoas);
                 }
             })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
