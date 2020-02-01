@@ -58,6 +58,16 @@ namespace TalkToApi
                 op.SuppressModelStateInvalidFilter = true;
             });
 
+            services.AddCors(cfg =>
+            {
+                cfg.AddDefaultPolicy(policy =>
+                {
+                    policy.WithOrigins("https://localhost:44305/", "http://localhost:44305/")
+                    .WithOrigins("GET")
+                    .WithHeaders("Accept", "Authorization");
+                });
+            });
+
             services.AddScoped<IMensagemRepository, MensagemRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<ITokenRepository, TokenRepository>();
@@ -182,7 +192,7 @@ namespace TalkToApi
             {
                 app.UseHsts();
             }
-
+            app.UseCors();
             app.UseHttpsRedirection();
             app.UseMvc();
             app.UseAuthentication();
