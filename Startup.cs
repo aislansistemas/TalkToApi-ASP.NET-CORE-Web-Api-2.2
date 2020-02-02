@@ -63,9 +63,18 @@ namespace TalkToApi
                 cfg.AddDefaultPolicy(policy =>
                 {
                     policy.WithOrigins("https://localhost:44305/", "http://localhost:44305/")
-                    .WithOrigins("GET")
-                    .WithHeaders("Accept", "Authorization");
+                    .AllowAnyMethod()
+                    .SetIsOriginAllowedToAllowWildcardSubdomains()
+                    .AllowAnyHeader();
+                    
                 });
+
+                cfg.AddPolicy("anyOrigin",policy=> {
+                    policy.AllowAnyOrigin()
+                    .WithMethods("GET")
+                    .AllowAnyMethod();
+                });
+
             });
 
             services.AddScoped<IMensagemRepository, MensagemRepository>();
@@ -77,7 +86,12 @@ namespace TalkToApi
                 cfg.UseSqlite("Data Source=Database\\TalkTo.db");
             });
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+            })
                 .AddEntityFrameworkStores<TalkToContext>()
                 .AddDefaultTokenProviders();
 
@@ -192,7 +206,7 @@ namespace TalkToApi
             {
                 app.UseHsts();
             }
-            app.UseCors();
+           // app.UseCors("anyOrigin");
             app.UseHttpsRedirection();
             app.UseMvc();
             app.UseAuthentication();

@@ -15,12 +15,14 @@ using TalkToApi.V1.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using TalkToApi.Helpers.Contants;
+using Microsoft.AspNetCore.Cors;
 
 namespace TalkToApi.V1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
+    [EnableCors("anyOrigin")]
     public class UsuarioController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -41,6 +43,7 @@ namespace TalkToApi.V1.Controllers
         }
         [Authorize]
         [HttpGet("",Name ="UsuarioObterTodos")]
+        [DisableCors]
         public ActionResult ObterTodos([FromHeader(Name = "Accept")]string mediaType)
         {
             var usuariosappuser = _userInManager.Users.ToList();
@@ -152,10 +155,8 @@ namespace TalkToApi.V1.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser usuario = new ApplicationUser();
-                usuario.FullName = usuarioDTO.Nome;
-                usuario.UserName = usuarioDTO.Email;
-                usuario.Email = usuarioDTO.Email;
+                ApplicationUser usuario = _mapper.Map<UsuarioDTO,ApplicationUser>(usuarioDTO);
+                
                 var resultado = _userInManager.CreateAsync(usuario, usuarioDTO.Senha).Result;
 
                 if (!resultado.Succeeded)
